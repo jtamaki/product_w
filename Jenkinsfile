@@ -10,7 +10,7 @@ pipeline {
     stage('build') {
       steps {
 	    dir('./product') {
-          sh '/src_make.sh'
+          sh './src_make.sh'
 		}
       }
     }
