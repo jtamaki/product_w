@@ -4,6 +4,7 @@ pipeline {
     stage('checkout') {
       steps {
 	    echo 'checkout master'
+        sh 'git submodule update --init --recursive'
       }
     }
 
