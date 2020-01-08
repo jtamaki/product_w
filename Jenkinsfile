@@ -1,17 +1,29 @@
 pipeline {
   agent any
   stages {
-    stage('hello') {
+    stage('checkout') {
       steps {
-        echo 'hello'
+	    echo 'checkout master'
       }
     }
 
-    stage('world') {
+    stage('build') {
       steps {
-        echo 'world'
+        sh './product/src_make.sh'
       }
     }
 
+    stage('build unit test') {
+      steps {
+        sh './product/test_make.sh'
+      }
+    }
+
+    stage('run unit test') {
+      steps {
+        sh './product/test_run.sh'
+        xunit thresholds: [failed(unstableThreshold: '0')], tools: [GoogleTest(deleteOutputFiles: true, failIfNotNew: true, pattern: 'test_result.xml', skipNoTestFiles: false, stopProcessingIfError: true)]
+      }
+    }
   }
 }
